@@ -26,7 +26,7 @@ const options = {
 // mongoose.connect('mongodb+srv://eden-udemy-node:b1oFF21lkvpUul1m@cluster0.xku6e.mongodb.net/test', options, (err, res) => {
 
 // Mongo Compass
-mongoose.connect('mongodb://localhost:27017/cafe', options, (err, res) => {
+mongoose.connect(process.env.URLDB , options, (err, res) => {
   if (err) {
     throw err
     console.log('DB Offline')
