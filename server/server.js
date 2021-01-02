@@ -22,6 +22,10 @@ const options = {
   useUnifiedTopology: true,
 }
 
+// Mongo Atlas
+// mongoose.connect('mongodb+srv://eden-udemy-node:b1oFF21lkvpUul1m@cluster0.xku6e.mongodb.net/test', options, (err, res) => {
+
+// Mongo Compass
 mongoose.connect('mongodb://localhost:27017/cafe', options, (err, res) => {
   if (err) {
     throw err
@@ -33,3 +37,4 @@ mongoose.connect('mongodb://localhost:27017/cafe', options, (err, res) => {
 app.listen(process.env.PORT, () => {
   console.log(`Listening on port: 3000`)
 })
+

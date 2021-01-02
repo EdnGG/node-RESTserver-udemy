@@ -1,11 +1,51 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
+const _ = require('underscore')
+
 const Usuario = require('../models/usuario.js')
 
 const app = express()
 
 app.get('/usuario', (req, res) => {
-  res.send('Get usuario')
+  let desde = req.query.desde || 0
+  desde = Number(desde)
+
+  let limite = req.query.limite || 5
+  limite = Number(limite)
+
+  Usuario.find({ estado: true }, 'nombre email rol estado google')
+    .skip(desde)
+    .limit(limite)
+    .exec((err, usuarios) => {
+        if (err) {
+          return res.status(400).json({
+          ok: false,
+          err
+          })
+        }
+      // Esta es la respuesta del servicio
+      Usuario.count({ estado: true }, (err, conteo) => {
+      // handler Error
+
+        if (err) {
+          return res.status(400).json({
+          ok: false,
+          err
+          })
+        }
+        // handle response
+        res.json({
+          ok: true,
+          usuarios,
+          cantidad: conteo
+        })
+
+      })
+        
+      
+    })
+
+  // res.send('Get usuario')
 })
 
 app.post('/usuario', (req, res) => {
@@ -40,9 +80,13 @@ app.post('/usuario', (req, res) => {
 
 app.put('/usuario/:id', (req, res) => {
   let id = req.params.id
-  let body = req.body
+  // las propiedades de arreglo vienen del Schema
+  let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado'])
 
-  Usuario.findByIdAndUpdate(id, body, { new: true },(err, usuarioDB) => {
+  // delete body.password
+  // delete body.google
+
+  Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true },(err, usuarioDB) => {
     
     if (err) {
       return res.status(400).json({
@@ -63,8 +107,34 @@ app.put('/usuario/:id', (req, res) => {
 
 // Ya no se acostumbra borrar registro en DB
 // Lo que se hace es deshabilitar para que el registro siempre quede
-app.delete('/usuario', (req, res) => {
-  res.send('Delete usuario')
+app.delete('/usuario/:id', (req, res) => {
+  // res.send('Delete usuario')
+  let id = req.params.id
+  let handleState = {
+    estado: false
+  }
+
+  Usuario.findByIdAndUpdate(id, handleState, { new: false }, (err, usuarioBorrado) => {
+  // Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
+    if (err) {
+      return res.status(400).json({
+        ok: false,
+        err
+      })
+    }
+    if (!usuarioBorrado) {
+      return res.status(400).json({
+        ok: false,
+        err: {
+          message: 'User not found'
+        }
+      })
+    }
+    res.json({
+      ok: true,
+      usuario: usuarioBorrado
+    })
+  })
 })
 
 
