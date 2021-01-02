@@ -29,12 +29,11 @@ const options = {
 mongoose.connect(process.env.URLDB , options, (err, res) => {
   if (err) {
     throw err
-    console.log('DB Offline')
   }
   console.log('DB ONLINE')
 })
 
 app.listen(process.env.PORT, () => {
-  console.log(`Listening on port: 3000`)
+  console.log(`Listening on port: ${process.env.PORT}`)
 })
 
