@@ -3,10 +3,19 @@ const bcrypt = require('bcrypt')
 const _ = require('underscore')
 
 const Usuario = require('../models/usuario.js')
+const { verificarToken, verificaAdmin_role} = require('../middlewares/autenticacion')
 
 const app = express()
 
-app.get('/usuario', (req, res) => {
+app.get('/usuario', verificarToken, (req, res) => {
+  
+  // return res.json({
+  //   usuario: req.usuario,
+  //   nombre: req.usuario.nombre,
+  //   email: req.usuario.email
+  // })
+
+
   let desde = req.query.desde || 0
   desde = Number(desde)
 
@@ -44,11 +53,11 @@ app.get('/usuario', (req, res) => {
         
       
     })
-
+    // next()
   // res.send('Get usuario')
 })
 
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificarToken, verificaAdmin_role] ,(req, res) => {
   let body = req.body
 
   let usuario = new Usuario({
@@ -78,7 +87,7 @@ app.post('/usuario', (req, res) => {
 
 })
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificarToken, verificaAdmin_role] ,(req, res) => {
   let id = req.params.id
   // las propiedades de arreglo vienen del Schema
   let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado'])
@@ -107,7 +116,7 @@ app.put('/usuario/:id', (req, res) => {
 
 // Ya no se acostumbra borrar registro en DB
 // Lo que se hace es deshabilitar para que el registro siempre quede
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuario/:id', [verificarToken, verificaAdmin_role] ,(req, res) => {
   // res.send('Delete usuario')
   let id = req.params.id
   let handleState = {
@@ -139,3 +148,6 @@ app.delete('/usuario/:id', (req, res) => {
 
 
 module.exports = app
+
+
+// test7@gmail.com es ADMIN_ROLE

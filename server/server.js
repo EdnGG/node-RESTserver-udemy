@@ -13,8 +13,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-
-app.use( require('./routes/usuario.js'))
+// Global Routes Configuration
+app.use( require('./routes/index'))
+// app.use( require('./routes/usuario.js'))
+// app.use( require('./routes/login.js'))
 
 const options = {
   useNewUrlParser: true,
