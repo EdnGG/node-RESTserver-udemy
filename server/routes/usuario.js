@@ -150,4 +150,5 @@ app.delete('/usuario/:id', [verificarToken, verificaAdmin_role] ,(req, res) => {
 module.exports = app
 
 
-// test7@gmail.com es ADMIN_ROLE
+// Sophia test7@gmail.com es ADMIN_ROLE EN DESARROLLO
+// Lucia luciababy@gmail.com ES ADMIN_ROLE EN PRODUCCION
