@@ -20,6 +20,12 @@ process.env.SEED = process.env.SEED || 'seed-desarrollo'
 
 
 // /*************************** 
+// CLIENT_ID
+// ****************************/
+process.env.CLIENT_ID = process.env.CLIENT_ID || '784763271473-8h0bh0shvqp3i2ef3n8sttpbd7g7asjs.apps.googleusercontent.com'
+
+
+// /*************************** 
 // Base de datos
 // *****************************/
 let urlDB
