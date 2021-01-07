@@ -19,7 +19,7 @@ app.use(express.static(path.resolve( __dirname , '../public')))
 app.use(bodyParser.json())
 
 // Global Routes Configuration
-app.use( require('./routes/index'))
+app.use( require('./routes/index.js'))
 // app.use( require('./routes/usuario.js'))
 // app.use( require('./routes/login.js'))
 
